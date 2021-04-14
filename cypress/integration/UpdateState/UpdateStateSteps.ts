@@ -8,7 +8,8 @@ Given('I open the {string} page', (pageurl) => {
 
 And('the page has {string} as applicant in {string} state', (applicant, state) => {
     applicant = applicant.toLowerCase();
-    // Page.findApplicant(applicant, state)
+
+    // Following function returns state DOM
     Page.StateObject(state)
         .find('.CrewMember-info > .CrewMemeber-name ')
         .contains(applicant);
@@ -17,14 +18,27 @@ And('the page has {string} as applicant in {string} state', (applicant, state) =
 
 When('I click button {string} to shift {string} from {string} state', (buttonDirection, applicant, currentState) => {
     buttonDirection = buttonDirection.toLowerCase();
+    applicant = applicant.toLowerCase();
 
     //Switch function to click on left arrow / right arrow button in crew container
     switch (buttonDirection) {
         case 'moveright':
-            Page.shiftRightApplicant(applicant, currentState)
+            Page.StateObject(currentState) // returns state DOM
+                .find('.CrewMember-info > .CrewMemeber-name ') // finds Crew Member Name class
+                .contains(applicant) // checks specified applicant is present
+                .parents('.CrewMember-container') // Navigate back to the immediate parent div
+                .find('.CrewMember-toolbar > .CrewMember-up') // find CrewMember-up class under the immediate parent
+                .should('contain', ">") // checks the class contain move right arrow button
+                .click();
             break;
         case 'moveleft':
-            Page.shiftLeftApplicant(applicant, currentState)
+            Page.StateObject(currentState) // returns state DOM
+                .find('.CrewMember-info > .CrewMemeber-name ') // finds Crew Member Name class
+                .contains(applicant)// checks specified applicant is present
+                .parents('.CrewMember-container') // Navigate back to the immediate parent div
+                .find('.CrewMember-toolbar > :not(.CrewMember-up)')// find CrewMember-toolbar class which does not have "CrewMember-up" class, under the immediate parent
+                .should('contain', "<") // checks the class contain move left arrow button
+                .click();
             break;
         default:
             throw Error('Not matched directions');
@@ -33,7 +47,11 @@ When('I click button {string} to shift {string} from {string} state', (buttonDir
 })
 
 And('the applicant {string} is not displayed in {string}', (applicant, state) => {
-    // Following function returns the requried state DOM
-    Page.checkApplicantInState(applicant, state)
+    applicant = applicant.toLowerCase();
+
+    // Following function returns state DOM
+    Page.StateObject(state)
+        .find('.CrewMember-info > .CrewMemeber-name ') // checks on retruned state dom , the specified applicant is not 
         .should("not.contain", applicant);
+
 });

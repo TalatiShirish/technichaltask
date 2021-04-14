@@ -7,59 +7,6 @@ export class Page {
     }
 
     // Finding / Checking Applicant
-    public static findApplicant(applicant: string, state: string): Cypress.Chainable {
-        state = state.toLowerCase();
-        applicant = applicant.toLowerCase();
-
-        switch (state) {
-            case 'applied':
-                return cy.get('.App-column').find('h2')
-                    .contains('Applied')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant);
-            case 'interviewing':
-                return cy.get('.App-column').find('h2')
-                    .contains('Interviewing')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant);
-            case 'hired':
-                return cy.get('.App-column').find('h2')
-                    .contains('Hired')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant);
-            default:
-                throw Error('Invalid State');
-        }
-    }
-
-    public static checkApplicantInState(applicant: string, state: string): Cypress.Chainable {
-        state = state.toLowerCase();
-        applicant = applicant.toLowerCase();
-        switch (state) {
-            case 'applied':
-                return cy.get('.App-column').find('h2')
-                    .contains('Applied')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ');
-            case 'interviewing':
-                return cy.get('.App-column').find('h2')
-                    .contains('Interviewing')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ');
-            case 'hired':
-                return cy.get('.App-column').find('h2')
-                    .contains('Hired')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ');
-            default:
-                throw Error('Invalid State');
-        }
-
-
-    }
 
     public static numberofApplicantDisplayed(number: string): Cypress.Chainable {
         return cy.get('.CrewMember-container')
@@ -75,73 +22,7 @@ export class Page {
 
 
 
-    //Clicking on a button
-
-    public static shiftRightApplicant(applicant: string, state: string): Cypress.Chainable {
-        applicant = applicant.toLowerCase();
-        state = state.toLowerCase();
-
-        switch (state) {
-            case 'applied':
-                return cy.get('.App-column').find('h2')
-                    .contains('Applied')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant)
-                    .parents('.CrewMember-container')
-                    .find('.CrewMember-toolbar > .CrewMember-up')
-                    .should('contain', ">")
-                    .click();
-            case 'interviewing':
-                return cy.get('.App-column').find('h2')
-                    .contains('Interviewing')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant)
-                    .parents('.CrewMember-container')
-                    .find('.CrewMember-toolbar > .CrewMember-up')
-                    .should('contain', ">")
-                    .click();
-            case 'hired':
-                throw Error('Can not shift Right from Hired State');
-            default:
-                throw Error('Invalid State');
-        }
-
-    }
-
-    public static shiftLeftApplicant(applicant: string, state: string): Cypress.Chainable {
-        applicant = applicant.toLowerCase();
-        state = state.toLowerCase()
-
-        switch (state) {
-            case 'applied':
-                throw Error('Can not shift Left from Applied State');
-            case 'interviewing':
-                return cy.get('.App-column').find('h2')
-                    .contains('Interviewing')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant)
-                    .parents('.CrewMember-container')
-                    .find('.CrewMember-toolbar > :not(.CrewMember-up)')
-                    .should('contain', "<")
-                    .click();
-            case 'hired':
-                return cy.get('.App-column').find('h2')
-                    .contains('Hired')
-                    .parent()
-                    .find('.CrewMember-info > .CrewMemeber-name ')
-                    .contains(applicant)
-                    .parents('.CrewMember-container')
-                    .find('.CrewMember-toolbar > :not(.CrewMember-up)')
-                    .should('contain', "<")
-                    .click();
-            default:
-                throw Error('Invalid State');
-        }
-
-    }
+    //Clicking on a specified button
 
     public static clickButton(button: string): Cypress.Chainable {
         button = button.toLowerCase();
@@ -156,7 +37,7 @@ export class Page {
         }
     }
 
-    //Enter Data
+    //Enter Data in specified text field
 
     public static enterText(searchText: string, searchField: string): Cypress.Chainable {
         searchText = searchText.toLowerCase();
@@ -180,6 +61,7 @@ export class Page {
         }
     }
 
+    // Retruns specified state DOM
     public static StateObject(state: string): Cypress.Chainable {
         state = state.toLowerCase();
 
